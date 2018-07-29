@@ -1,0 +1,436 @@
+# Create an restaurant application using Tkinter library, have 8 different menu items. There should be button, that should open
+# an Admin Module which would display the total sales according to the day. (Don't forget to add exception handling and connect ' \
+#                                                                               'the application to SQLite database.) *
+
+import random
+import sqlite3
+import tkinter as tk
+from tkinter import *
+from tkinter import ttk
+from unicodedata import name
+
+import time;
+
+roo = tk.Tk()
+
+#root.geometry("1600x700+0+0")
+roo.title("Restaurant Management System")
+
+connection = sqlite3.connect('management.db')
+
+# TABLE_NAME = "Restaurant Management_Table"
+# Order_No = "Order_no"
+# Fries_Meal = "fries_meal"
+# Lunch_Meal = "lunch_meal"
+# Burger_Meal = "burger_meal"
+# Pizza_Meal = "pizza_meal"
+# Cheese_burger = "cheese_burger"
+# Drinks= "drinks"
+# Cost ="cost"
+# Service_Charge = "service_charge"
+# Tax ="tax"
+# Subtotal = "subtotal"
+# Total = "total"
+#
+# connection.execute(" CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ( " +Order_No  +
+#                    " INTEGER PRIMARY KEY AUTOINCREMENT ," +
+#                    Fries_Meal + "INTEGER , " + Lunch_Meal + " , " +
+#                    Burger_Meal + " INTEGER, " + Pizza_Meal + " INTEGER, " + Cheese_burger + " INTEGER, " +
+#                    Drinks + " INTEGER,);")
+
+Tops = Frame(roo, height = 100, width = 1600,relief=SUNKEN)
+Tops.pack(side=TOP)
+
+f1 = Frame(roo,width = 900,height=700,relief=SUNKEN)
+f1.pack(side=LEFT)
+
+
+#------------------TIME--------------
+localtime=time.asctime(time.localtime(time.time()))
+
+
+#-----------------INFO TOP(Restaurant Management System)------------
+lblinfo = Label(Tops, font=( 'aria' ,50, 'bold' ),text="Hotel Sunny Hills",fg="indigo",bd=10,anchor='w')
+lblinfo.grid(row=0,column=0)
+
+lblinfo = Label(Tops, font=( 'aria' ,20, ),text=localtime,fg="steel blue",anchor=W)
+lblinfo.grid(row=1,column=0)
+
+def Ref():
+    x=random.randint(1, 50000)
+    randomRef = str(x)
+    rand.set(randomRef)
+
+    cof =float(Fries.get())
+    colfries= float(Largefries.get())
+    cob= float(Burger.get())
+    cofi= float(Filet.get())
+    cochee= float(Cheese_burger.get())
+    codr= float(Drinks.get())
+
+    costoffries = cof*25
+    costoflargefries = colfries*40
+    costofburger = cob*35
+    costoffilet = cofi*50
+    costofcheeseburger = cochee*50
+    costofdrinks = codr*35
+    costofmeal = "Rs.",str('%.2f'% (costoffries +  costoflargefries + costofburger + costoffilet + costofcheeseburger + costofdrinks))
+    PayTax=(int(costoffries +  costoflargefries + costofburger + costoffilet +  costofcheeseburger + costofdrinks)*0.33)
+    Totalcost=int(costoffries +  costoflargefries + costofburger + costoffilet  + costofcheeseburger + costofdrinks)
+    Ser_Charge=(int(costoffries +  costoflargefries + costofburger + costoffilet + costofcheeseburger + costofdrinks)/99)
+    Service="Rs.",str('%.2f'% Ser_Charge)
+    # connection.execute("INSERT INTO " + TABLE_NAME + " ( " + Fries_Meal + ", " +
+    #                    Lunch_Meal + ", " + Burger_Meal + ", " +
+    #                    Pizza_Meal + "," + Cheese_burger + ", " + Drinks + ", " + Cost + ", " + Service_Charge + ", " + Tax + ")
+    #                    VALUES('"+ cof + "', '" + colfries  + "', '" + cob + "', "  + cofi + "', '"'"+cochee + "', " +codr + ");
+    # connection.commit()
+
+    OverAllCost="Rs.",str( PayTax + Totalcost + Ser_Charge)
+    PaidTax="Rs.",str('%.2f'% PayTax)
+
+    Service_Charge.set(Service)
+    cost.set(costofmeal)
+    Tax.set(PaidTax)
+    Subtotal.set(costofmeal)
+    Total.set(OverAllCost)
+
+
+def qexit():
+    roo.destroy()
+
+def reset():
+    rand.set("")
+    Fries.set("")
+    Largefries.set("")
+    Burger.set("")
+    Filet.set("")
+    Subtotal.set("")
+    Total.set("")
+    Service_Charge.set("")
+    Drinks.set("")
+    Tax.set("")
+    cost.set("")
+    Cheese_burger.set("")
+
+
+rand = StringVar()
+Fries = StringVar()
+Largefries = StringVar()
+Burger = StringVar()
+Filet = StringVar()
+Subtotal = StringVar()
+Total = StringVar()
+Service_Charge = StringVar()
+Drinks = StringVar()
+Tax = StringVar()
+cost = StringVar()
+Cheese_burger = StringVar()
+
+
+
+lblreference = Label(f1, font=( 'aria' ,20, 'bold' ),text="Order No.",fg="steel blue",bd=10,anchor='w')
+lblreference.grid(row=0,column=0)
+txtreference = Entry(f1,font=('ariel' ,20,'bold'), textvariable=rand , bd=6,insertwidth=4,bg="powder blue" ,justify='right')
+txtreference.grid(row=0,column=1)
+
+lblfries = Label(f1, font=( 'aria' ,20, 'bold' ),text="Fries Meal",fg="steel blue",bd=10,anchor='w')
+lblfries.grid(row=1,column=0)
+txtfries = Entry(f1,font=('ariel' ,20,'bold'), textvariable=Fries , bd=6,insertwidth=4,bg="powder blue" ,justify='right')
+txtfries.grid(row=1,column=1)
+
+lblLargefries = Label(f1, font=( 'aria' ,20, 'bold' ),text="Lunch Meal",fg="steel blue",bd=10,anchor='w')
+lblLargefries.grid(row=2,column=0)
+txtLargefries = Entry(f1,font=('ariel' ,20,'bold'), textvariable=Largefries , bd=6,insertwidth=4,bg="powder blue" ,justify='right')
+txtLargefries.grid(row=2,column=1)
+
+
+lblburger = Label(f1, font=( 'aria' ,20, 'bold' ),text="Burger Meal",fg="steel blue",bd=10,anchor='w')
+lblburger.grid(row=3,column=0)
+txtburger = Entry(f1,font=('ariel' ,20,'bold'), textvariable=Burger , bd=6,insertwidth=4,bg="powder blue" ,justify='right')
+txtburger.grid(row=3,column=1)
+
+lblFilet = Label(f1, font=( 'aria' ,20, 'bold' ),text="Pizza Meal",fg="steel blue",bd=10,anchor='w')
+lblFilet.grid(row=4,column=0)
+txtFilet = Entry(f1,font=('ariel' ,20,'bold'), textvariable=Filet , bd=6,insertwidth=4,bg="powder blue" ,justify='right')
+txtFilet.grid(row=4,column=1)
+
+lblCheese_burger = Label(f1, font=( 'aria' ,20, 'bold' ),text="Cheese burger",fg="steel blue",bd=10,anchor='w')
+lblCheese_burger.grid(row=5,column=0)
+txtCheese_burger = Entry(f1,font=('ariel' ,20,'bold'), textvariable=Cheese_burger , bd=6,insertwidth=4,bg="powder blue" ,justify='right')
+txtCheese_burger.grid(row=5,column=1)
+
+#--------------------------------------------------------------------------------------
+lblDrinks = Label(f1, font=( 'aria' ,20, 'bold' ),text="Drinks",fg="steel blue",bd=10,anchor='w')
+lblDrinks.grid(row=0,column=2)
+txtDrinks = Entry(f1,font=('ariel' ,20,'bold'), textvariable=Drinks , bd=6,insertwidth=4,bg="powder blue" ,justify='right')
+txtDrinks.grid(row=0,column=3)
+
+lblcost = Label(f1, font=( 'aria' ,20, 'bold' ),text="cost",fg="steel blue",bd=10,anchor='w')
+lblcost.grid(row=1,column=2)
+txtcost = Entry(f1,font=('ariel' ,20,'bold'), textvariable=cost , bd=6,insertwidth=4,bg="powder blue" ,justify='right')
+txtcost.grid(row=1,column=3)
+
+lblService_Charge = Label(f1, font=( 'aria' ,20, 'bold' ),text="Service Charge",fg="steel blue",bd=10,anchor='w')
+lblService_Charge.grid(row=2,column=2)
+txtService_Charge = Entry(f1,font=('ariel' ,20,'bold'), textvariable=Service_Charge , bd=6,insertwidth=4,bg="powder blue" ,justify='right')
+txtService_Charge.grid(row=2,column=3)
+
+lblTax = Label(f1, font=( 'aria' ,20, 'bold' ),text="Tax",fg="steel blue",bd=10,anchor='w')
+lblTax.grid(row=3,column=2)
+txtTax = Entry(f1,font=('ariel' ,20,'bold'), textvariable=Tax , bd=6,insertwidth=4,bg="powder blue" ,justify='right')
+txtTax.grid(row=3,column=3)
+
+lblSubtotal = Label(f1, font=( 'aria' ,20, 'bold' ),text="Subtotal",fg="steel blue",bd=10,anchor='w')
+lblSubtotal.grid(row=4,column=2)
+txtSubtotal = Entry(f1,font=('ariel' ,20,'bold'), textvariable="Subtotal" , bd=6,insertwidth=4,bg="powder blue" ,justify='right')
+txtSubtotal.grid(row=4,column=3)
+
+lblTotal = Label(f1, font=( 'aria' ,20, 'bold' ),text="Total",fg="steel blue",bd=10,anchor='w')
+lblTotal.grid(row=5,column=2)
+txtTotal = Entry(f1,font=('ariel' ,20,'bold'), textvariable=Total , bd=6,insertwidth=4,bg="powder blue" ,justify='right')
+txtTotal.grid(row=5,column=3)
+
+#-----------------------------------------buttons------------------------------------------
+lblTotal = Label(f1,text="---------------------",fg="white")
+lblTotal.grid(row=6,columnspan=3)
+
+btnTotal=Button(f1,padx=16,pady=8, bd=10 ,fg="black",font=('ariel' ,16,'bold'),width=15, text="TOTAL", bg="powder blue",command=Ref)
+btnTotal.grid(row=7, column=1)
+
+btnreset=Button(f1,padx=16,pady=8, bd=10 ,fg="black",font=('ariel' ,16,'bold'),width=15, text="RESET", bg="powder blue",command=reset)
+btnreset.grid(row=7, column=2)
+
+# btnexit=Button(f1,padx=16,pady=8, bd=10 ,fg="black",font=('ariel' ,16,'bold'),width=10, text="EXIT", bg="powder blue",command=qexit)
+# btnexit.grid(row=7, column=3)
+
+def price():
+    roo = Tk()
+    roo.geometry("600x220+0+0")
+    roo.title("Price List")
+    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="ITEM", fg="black", bd=5)
+    lblinfo.grid(row=0, column=0)
+    lblinfo = Label(roo, font=('aria', 15,'bold'), text="_____________", fg="white", anchor=W)
+    lblinfo.grid(row=0, column=2)
+    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="PRICE", fg="black", anchor=W)
+    lblinfo.grid(row=0, column=3)
+    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="Fries Meal", fg="steel blue", anchor=W)
+    lblinfo.grid(row=1, column=0)
+    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="25", fg="steel blue", anchor=W)
+    lblinfo.grid(row=1, column=3)
+    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="Lunch Meal", fg="steel blue", anchor=W)
+    lblinfo.grid(row=2, column=0)
+    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="40", fg="steel blue", anchor=W)
+    lblinfo.grid(row=2, column=3)
+    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="Burger Meal", fg="steel blue", anchor=W)
+    lblinfo.grid(row=3, column=0)
+    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="35", fg="steel blue", anchor=W)
+    lblinfo.grid(row=3, column=3)
+    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="Pizza Meal", fg="steel blue", anchor=W)
+    lblinfo.grid(row=4, column=0)
+    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="50", fg="steel blue", anchor=W)
+    lblinfo.grid(row=4, column=3)
+    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="Cheese Burger", fg="steel blue", anchor=W)
+    lblinfo.grid(row=5, column=0)
+    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="30", fg="steel blue", anchor=W)
+    lblinfo.grid(row=5, column=3)
+    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="Drinks", fg="steel blue", anchor=W)
+    lblinfo.grid(row=6, column=0)
+    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="35", fg="steel blue", anchor=W)
+    lblinfo.grid(row=6, column=3)
+
+    roo.mainloop()
+def admin():
+    roo = Tk()
+    roo.geometry("600x220+0+0")
+    roo.title("Management")
+    TABLE_CUSTOMER = "management_table"
+    CUSTOMER_ID = "customer_id"
+    CUSTOMER_NAME = "customer_name"
+    CUSTOMER_AGE = "customer_age"
+    CUSTOMER_ADDRESS = "customer_address"
+    CUSTOMER_PHONE = "customer_phone"
+
+
+    connection.execute(" CREATE TABLE IF NOT EXISTS " + TABLE_CUSTOMER + " ( " + CUSTOMER_ID +
+                       " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                       CUSTOMER_NAME + " TEXT, " + CUSTOMER_AGE + " INTEGER, " +
+                       CUSTOMER_ADDRESS + " TEXT, " + CUSTOMER_PHONE + " INTEGER);")
+
+    appLabel = tk.Label(roo, font=( 'aria' ,100, 'bold' ),text="Customer Details",fg="steel blue",bd=20,anchor='w')
+    appLabel.config(font=("SUNKEN", 50))
+    appLabel.grid(row=0, columnspan=2, padx=(350, 350), pady=(50, 0))
+
+    class Customer:
+        customerName = ""
+        customerAge = ""
+        customerNumber = 0
+        customerAddress = ""
+
+        def __init__(self, customerName, customerAge, customerNumber, customerAddress):
+            self.customerName = customerName
+            self.customerAge = customerAge
+            self.customerNumber = customerNumber
+            self.customerAddress = customerAddress
+
+    nameLabel = tk.Label(roo,font=( 'aria' ,16, 'bold' ),text="Enter customer name",width=40,bd=10,anchor='w'  ) \
+        .grid(row=1, column=0, padx=(30, 0), pady=(30, 0))
+    ageLabel = tk.Label(roo,font=( 'aria' ,16, 'bold' ), text="Enter customer Age", width=40,bd=10, anchor='w'  ) \
+        .grid(row=2, column=0, padx=(30, 0))
+    phoneLabel = tk.Label(roo,font=( 'aria' ,16, 'bold' ), text="Enter customer phone number", width=40,bd=10, anchor='w'  ) \
+        .grid(row=3, column=0, padx=(30, 0))
+    addressLabel = tk.Label(roo,font=( 'aria' ,16, 'bold' ), text="Enter customer address", width=40,bd=10, anchor='w'  ) \
+        .grid(row=4, column=0, padx=(30, 0))
+
+    nameEntry = Entry(roo,font=('ariel' ,16,'bold'), bd=6,insertwidth=4,bg="powder blue" ,justify='right')
+    ageEntry = Entry(roo,font=('ariel' ,16,'bold'), bd=6,insertwidth=4,bg="powder blue" ,justify='right')
+    phoneEntry = Entry(roo,font=('ariel' ,16,'bold'), bd=6,insertwidth=4,bg="powder blue" ,justify='right')
+    addressEntry = Entry(roo,font=('ariel' ,16,'bold'), bd=6,insertwidth=4,bg="powder blue" ,justify='right')
+
+    nameEntry.grid(row=1, column=1, padx=(0, 50), pady=(20))
+    ageEntry.grid(row=2, column=1, padx=(0, 50), pady=20)
+    phoneEntry.grid(row=3, column=1, padx=(0, 50), pady=20)
+    addressEntry.grid(row=4, column=1, padx=(0, 50), pady=20)
+
+    name = ""
+    age = ""
+    phone = ""
+    address = ""
+    list = []
+
+    def takeNameInput():
+        global nameEntry, ageEntry, phoneEntry, addressEntry
+        global name, age, phone, address
+        global list
+        global TABLE_CUSTOMER, CUSTOMER_NAME, CUSTOMER_AGE, CUSTOMER_ADDRESS, CUSTOMER_PHONE
+        name = nameEntry.get()
+        nameEntry.delete(0, END)
+        age = int(ageEntry.get())
+        ageEntry.delete(0, END)
+        phone = int(phoneEntry.get())
+        phoneEntry.delete(0, END)
+        address = addressEntry.get()
+        addressEntry.delete(0, END)
+
+        connection.execute("INSERT INTO " + TABLE_CUSTOMER + " ( " + CUSTOMER_NAME + ", " +
+                           CUSTOMER_AGE + ", " + CUSTOMER_ADDRESS + ", " +
+                           CUSTOMER_PHONE + " ) VALUES ( '"
+                           + name + "', '" + str(age) + "', '" +
+                           address + "', " + str(phone) + " ); ")
+        connection.commit()
+
+    def destroyRootWindow():
+        roo.destroy()
+
+    def printDetails():
+        for singleItem in list:
+            print("Customer name is: %s\nCustomer age is: %s\nPhone number is: %d\nAddress is: %s" %
+                  (singleItem.customerName, singleItem.customerAge, singleItem.phoneNumber, singleItem.address))
+            print("****************************************")
+
+    button = tk.Button(roo, padx = 16, pady = 8, bd = 10, fg = "black", font = ('ariel', 16,
+            'bold'), width = 15,text="Take input" , bg = "powder blue", command=takeNameInput)
+    button.grid(row=5, column=0, pady=30)
+
+
+    displayButton = tk.Button(roo, padx = 16, pady = 8, bd = 10, fg = "black", font = ('ariel', 16,
+                'bold'), width = 15, text = "Display result", bg = "powder blue", command = destroyRootWindow)
+    displayButton.grid(row=5, column=1)
+
+    roo.mainloop()
+    secondWindow = tk.Tk()
+    secondWindow.title("Display results")
+
+    appLabel = tk.Label(secondWindow, text="Student Management System", fg="#06a099", width=40)
+    appLabel.config(font=("Sylfaen", 30))
+
+    appLabel.pack()
+
+    tree = ttk.Treeview(secondWindow)
+    tree["columns"] = ("one", "two", "three", "four")
+    tree.column("one", width=200)
+    tree.column("two", width=200)
+    tree.column("three", width=200)
+    tree.column("four", width=200)
+    tree.heading("one", text="Customer Name")
+    tree.heading("two", text="Customer Age")
+    tree.heading("three", text="Address")
+    tree.heading("four", text="Phone Number")
+
+    tree.insert('', 0, text="Student 1", values=("Sneha", 22, 9810821705, "uttarkashi, Uttrakhand"))
+
+    cursor = connection.execute("SELECT * FROM " + TABLE_CUSTOMER + " ;")
+    i = 0
+
+    for row in cursor:
+        tree.insert('', i, text="Student " + str(row[0]),
+                    values=(row[1], row[2],
+                            row[3], row[4]))
+        i = i + 1
+
+    tree.pack()
+
+    connection.close()
+
+    secondWindow.mainloop()
+
+
+
+btnprice=Button(f1,padx=16,pady=8, bd=10 ,fg="black",font=('ariel' ,16,'bold'),width=15, text="PRICE", bg="powder blue",command=price)
+btnprice.grid(row=7, column=0)
+# btntakeinput = Button(f1,padx=16,pady=8, bd=10 ,fg="black",font=('ariel' ,16,'bold'),width=10,text="TAKE INPUT", bg="powder blue",
+#                        command=Ref)
+# btntakeinput.grid(row=7, column=3)
+
+btnadmin = Button(f1,padx=16,pady=8, bd=10 ,fg="black",font=('ariel' ,16,'bold'),width=15,text="ADMIN",bg="powder blue",command=admin)
+btnadmin.grid(row=7, column=3)
+
+# lblTotal = Label(f1, font=( 'aria' ,16, 'bold' ),text="Total",fg="steel blue",bd=10,anchor='w')
+# lblTotal.grid(row=5,column=2)
+# txtTotal = Entry(f1,font=('ariel' ,16,'bold'), textvariable=Total , bd=6,insertwidth=4,bg="powder blue" ,justify='right')
+# txtTotal.grid(row=5,column=3)
+
+# connection.execute(" CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ( " +Order_No  +
+#                    " INTEGER PRIMARY KEY AUTOINCREMENT ," +
+#                    Fries_Meal + "INTEGER , " + Lunch_Meal + " , " +
+#                    Burger_Meal + " INTEGER, " + Pizza_Meal + " INTEGER, " + Cheese_burger + " INTEGER, " +
+#                    Drinks + " INTEGER);")
+#
+# tree = ttk.Treeview(secondWindow)
+# tree["columns"]=("one","two", "three", "four")
+# tree.column("one", width=200)
+# tree.column("two", width=200)
+# tree.column("three", width=200)
+# tree.column("four", width=200)
+# tree.column("five", width=200)
+# tree.column("six", width=200)
+# tree.heading("one", text="Fries_Meal")
+# tree.heading("two", text="Lunch_Meal ")
+# tree.heading("three", text="Burger_Meal")
+# tree.heading("four", text="Pizza_Meal")
+# tree.heading("four", text="Cheese_burger")
+# tree.heading("four", text="Drinks")
+#
+#
+#
+# cursor = connection.execute("SELECT * FROM " + TABLE_NAME + " ;")
+# i = 0
+#
+# for row in cursor:
+#     tree.insert('', i, text="Student " + str(row[0]),
+#                 values=(row[1], row[2],
+#                         row[3], row[4],row[5],row[6],))
+#     i = i+1
+
+# for singleItem in list:
+    # tree.insert('', i, text="Student " + str(i+1),
+    #             values=(singleItem.studentName, singleItem.collegeName,
+    #                     singleItem.phoneNumber, singleItem.address))
+    # i = i+1
+
+
+# tree.pack()
+#
+# connection.close()
+#
+# secondWindow.mainloop()
+roo.mainloop()
